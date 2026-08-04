@@ -1,0 +1,25 @@
+# Normalize line endings across macOS and Windows 11.
+# Everything is stored as LF in the repo; Windows checkouts get CRLF where needed.
+* text=auto eol=lf
+
+# Windows-native scripts must keep CRLF or they break.
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+*.ps1   text eol=crlf
+
+# Unix scripts must keep LF or they break.
+*.sh    text eol=lf
+
+# Binary files — never touch these.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.pdf   binary
+*.zip   binary
+*.gz    binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary

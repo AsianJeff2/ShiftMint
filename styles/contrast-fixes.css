@@ -1,0 +1,110 @@
+/* Contrast fixes for better text readability */
+
+/* Fix muted foreground text to have better contrast */
+.text-muted-foreground {
+  color: rgb(71, 85, 105) !important; /* slate-600 instead of default gray-500 */
+}
+
+/* Dark mode muted foreground */
+.dark .text-muted-foreground {
+  color: rgb(203, 213, 225) !important; /* slate-300 for dark mode */
+}
+
+/* Fix gray text colors for better contrast */
+.text-gray-500 {
+  color: rgb(71, 85, 105) !important; /* slate-600 */
+}
+
+.text-gray-600 {
+  color: rgb(51, 65, 85) !important; /* slate-700 */
+}
+
+/* Ensure proper contrast on colored backgrounds */
+.bg-yellow-50 .text-yellow-700,
+.bg-yellow-50 .text-yellow-800 {
+  color: rgb(113, 63, 18) !important; /* yellow-900 for better contrast */
+}
+
+.bg-blue-50 .text-blue-800 {
+  color: rgb(30, 58, 138) !important; /* blue-900 for better contrast */
+}
+
+.bg-red-50 .text-red-800 {
+  color: rgb(127, 29, 29) !important; /* red-900 for better contrast */
+}
+
+.bg-green-50 .text-green-800 {
+  color: rgb(20, 83, 45) !important; /* green-900 for better contrast */
+}
+
+/* Fix CardDescription contrast */
+.text-sm.text-muted-foreground,
+.text-xs.text-muted-foreground {
+  color: rgb(71, 85, 105) !important; /* slate-600 for better readability */
+}
+
+/* Table headers should have good contrast */
+th {
+  color: rgb(30, 41, 59) !important; /* slate-800 */
+  font-weight: 600;
+}
+
+/* Badge contrast fixes */
+.bg-secondary {
+  background-color: rgb(241, 245, 249) !important; /* slate-100 */
+}
+
+.bg-secondary .text-secondary-foreground {
+  color: rgb(30, 41, 59) !important; /* slate-800 */
+}
+
+/* Ensure input placeholders are visible but not too prominent */
+input::placeholder,
+textarea::placeholder {
+  color: rgb(100, 116, 139) !important; /* slate-500 */
+  opacity: 1 !important;
+}
+
+/* Fix contrast for disabled elements */
+input:disabled,
+textarea:disabled,
+button:disabled {
+  opacity: 0.7 !important; /* Slightly more visible than default 0.5 */
+}
+
+/* Ensure proper contrast for success/error/warning text */
+.text-green-600 {
+  color: rgb(22, 101, 52) !important; /* green-800 */
+}
+
+.text-red-600 {
+  color: rgb(153, 27, 27) !important; /* red-800 */
+}
+
+.text-yellow-600 {
+  color: rgb(133, 77, 14) !important; /* yellow-800 */
+}
+
+/* Fix tab contrast */
+[data-state="active"].text-red-600 {
+  color: rgb(153, 27, 27) !important; /* red-800 */
+}
+
+[data-state="active"].text-yellow-600 {
+  color: rgb(133, 77, 14) !important; /* yellow-800 */
+}
+
+/* Ensure links are visible */
+a {
+  color: rgb(37, 99, 235) !important; /* blue-600 */
+}
+
+a:hover {
+  color: rgb(29, 78, 216) !important; /* blue-700 */
+}
+
+/* Card headers should have strong contrast */
+.card-header h3,
+.card-header h4 {
+  color: rgb(15, 23, 42) !important; /* slate-900 */
+}

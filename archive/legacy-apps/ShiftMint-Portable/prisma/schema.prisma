@@ -1,0 +1,247 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Business {
+  id        String   @id @default(cuid())
+  name      String
+  type      String?
+  phone     String?
+  website   String?
+  ein       String?
+  address   String?  // JSON string for address data
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  businessConfigurations BusinessConfiguration[]
+  employees              Employee[]
+  shifts                 Shift[]
+  users                  User[]
+  tipEntries            TipEntry[]
+  payrollPeriods        PayrollPeriod[]
+  auditLogs             AuditLog[]
+  punchEvents           PunchEvent[]
+  analyticsEntries      AnalyticsEntry[]
+
+  @@map("businesses")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  firstName    String
+  lastName     String
+  role         String    @default("owner")
+  passwordHash String
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  businessId   String
+  business     Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@map("users")
+}
+
+model Employee {
+  id                 String    @id @default(cuid())
+  businessId         String
+  employeeNumber     String
+  firstName          String
+  lastName           String
+  email              String
+  phone              String?
+  hourlyRate         Float
+  role               String
+  department         String?
+  startDate          DateTime
+  terminationDate    DateTime?
+  status             String    @default("active") // 'active', 'inactive', 'terminated'
+  tipEligible        Boolean   @default(true)
+  payType            String    @default("hourly") // 'hourly', 'salary'
+  overtimeRate       Float?
+  address            String?
+  emergencyContact   String?
+  emergencyPhone     String?
+  taxExemptions      Int       @default(0)
+  bankRoutingNumber  String?
+  bankAccountNumber  String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  business           Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@unique([businessId, email])
+  @@unique([businessId, employeeNumber])
+  @@map("employees")
+}
+
+model BusinessConfiguration {
+  id                    String    @id @default(cuid())
+  businessId            String    @unique
+  timeZone              String    @default("America/New_York")
+  payPeriodStartDay     Int       @default(1)
+  payPeriodFrequency    String    @default("bi-weekly")
+  tipPoolingEnabled     Boolean   @default(true)
+  tipOutMethod          String    @default("percentage")
+  defaultTipPercentage  Float     @default(18.0)
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  business              Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@map("business_configurations")
+}
+
+model Shift {
+  id               String      @id @default(cuid())
+  businessId       String
+  employeeId       String?     // Reference to Employee
+  shiftDate        String      // Date as string (YYYY-MM-DD)
+  startTime        DateTime
+  endTime          DateTime?
+  durationMin      Int?
+  jobCode          String      @default("server")
+  locationId       String      @default("main")
+  status           String      @default("active")
+  totalSales       Float       @default(0)
+  cashSales        Float       @default(0)
+  creditCardSales  Float       @default(0)
+  totalTips        Float       @default(0)
+  cashTips         Float       @default(0)
+  creditCardTips   Float       @default(0)
+  notes            String?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  business         Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  // Relations
+  tipEntries       TipEntry[]
+  punchEvents      PunchEvent[]
+
+  @@map("shifts")
+}
+
+model TipEntry {
+  id            String    @id @default(cuid())
+  businessId    String
+  employeeId    String?   // Reference to Employee
+  shiftId       String?
+  amount        Float
+  tipType       String    // 'cash', 'credit', 'other'
+  source        String    @default("manual")
+  tableNumber   String?
+  notes         String?
+  timestamp     DateTime  @default(now())
+  processed     Boolean   @default(false)
+  processedAt   DateTime?
+  transactionId String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  business      Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  shift         Shift?    @relation(fields: [shiftId], references: [id], onDelete: SetNull)
+
+  @@map("tip_entries")
+}
+
+model PayrollPeriod {
+  id             String          @id @default(cuid())
+  businessId     String
+  startDate      DateTime
+  endDate        DateTime
+  status         String          @default("open")
+  totalTips      Float           @default(0)
+  totalSales     Float           @default(0)
+  notes          String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  business       Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  // Relations
+  payrollEntries PayrollEntry[]
+
+  @@map("payroll_periods")
+}
+
+model PayrollEntry {
+  id               String        @id @default(cuid())
+  payrollPeriodId  String
+  employeeId       String        // Reference to Employee
+  regularHours     Float         @default(0)
+  overtimeHours    Float         @default(0)
+  regularPay       Float         @default(0)
+  overtimePay      Float         @default(0)
+  grossPay         Float         @default(0)
+  totalTips        Float         @default(0)
+  totalTaxes       Float         @default(0)
+  netPay           Float         @default(0)
+  hoursWorked      Float         @default(0)
+  notes            String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  payrollPeriod    PayrollPeriod @relation(fields: [payrollPeriodId], references: [id], onDelete: Cascade)
+
+  @@unique([payrollPeriodId, employeeId])
+  @@map("payroll_entries")
+}
+
+model PunchEvent {
+  id          String   @id @default(cuid())
+  businessId  String
+  shiftId     String
+  employeeId  String?  // Reference to Employee
+  punchType   String   // 'clock_in', 'clock_out', 'break_start', 'break_end'
+  punchTime   DateTime
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  shift       Shift    @relation(fields: [shiftId], references: [id], onDelete: Cascade)
+
+  @@map("punch_events")
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  businessId  String
+  action      String   // 'CREATE', 'UPDATE', 'DELETE'
+  entityType  String   // 'TIP_ENTRY', 'SHIFT', 'PAYROLL_PERIOD', etc.
+  entityId    String
+  oldValues   String?  // JSON string
+  newValues   String?  // JSON string
+  timestamp   DateTime @default(now())
+  notes       String?
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@map("audit_logs")
+}
+
+model AnalyticsEntry {
+  id           String   @id @default(cuid())
+  businessId   String
+  eventType    String   // 'TIP_LOGGED', 'SHIFT_COMPLETED', 'PAYROLL_CALCULATED'
+  eventData    String   // JSON string with event details
+  deviceId     String?  // Hashed device identifier
+  appVersion   String?
+  timestamp    DateTime @default(now())
+  transmitted  Boolean  @default(false)
+  business     Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@map("analytics_entries")
+}
+
+model AppSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("app_settings")
+} 

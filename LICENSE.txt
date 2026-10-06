@@ -1,0 +1,39 @@
+SHIFTMINT SOFTWARE LICENSE AGREEMENT
+
+IMPORTANT: PLEASE READ THIS LICENSE AGREEMENT CAREFULLY BEFORE INSTALLING OR USING SHIFTMINT.
+
+This End User License Agreement ("Agreement") is a legal agreement between you (either an individual or a single entity) and ShiftMint ("Licensor") for the ShiftMint software product, which includes computer software and may include associated media, printed materials, and "online" or electronic documentation ("Software").
+
+By installing, copying, or otherwise using the Software, you agree to be bound by the terms of this Agreement. If you do not agree to the terms of this Agreement, do not install or use the Software.
+
+1. GRANT OF LICENSE
+The Licensor grants you a non-exclusive, non-transferable license to use the Software on a single computer or device. You may install and use one copy of the Software on a single computer.
+
+2. OWNERSHIP
+The Software is licensed, not sold. The Licensor retains all rights, title, and interest in and to the Software, including all intellectual property rights.
+
+3. RESTRICTIONS
+You may not:
+- Modify, reverse engineer, decompile, or disassemble the Software
+- Rent, lease, or lend the Software
+- Copy or distribute the Software except as expressly permitted in this Agreement
+- Remove any proprietary notices or labels on the Software
+
+4. DATA PRIVACY
+The desktop runtime stores workspace data on your device. The hosted runtime stores workspace data on its deployment server. Connecting a POS provider sends requests to that provider and retrieves its permitted merchant data. You are responsible for access controls, recovery keys and backups. Consult SECURITY.md and docs/DEPLOYMENT.md for the current data-handling behavior.
+
+5. DISCLAIMER OF WARRANTIES
+THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
+6. LIMITATION OF LIABILITY
+IN NO EVENT SHALL THE LICENSOR BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE SOFTWARE.
+
+7. TERMINATION
+This Agreement is effective until terminated. You may terminate it at any time by destroying the Software and all copies thereof. The Licensor may terminate this Agreement if you fail to comply with any terms and conditions.
+
+8. GOVERNING LAW
+This Agreement shall be governed by the laws of the jurisdiction in which the Licensor is located, without regard to conflict of law principles.
+
+By clicking "I Agree" or installing the Software, you acknowledge that you have read and understood this Agreement and agree to be bound by its terms and conditions.
+
+Copyright (c) 2024 ShiftMint. All rights reserved.

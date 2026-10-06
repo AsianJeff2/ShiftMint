@@ -1,0 +1,266 @@
+/* Fix text contrast on dark blue backgrounds */
+
+/* Force all text to be light on dark backgrounds */
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Ensure all text elements use light colors on dark backgrounds */
+h1, h2, h3, h4, h5, h6,
+p, span, div, label, 
+.text-sm, .text-xs, .text-base, .text-lg, .text-xl, .text-2xl, .text-3xl,
+.font-medium, .font-semibold, .font-bold {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Fix specific text color classes that might be using blue */
+.text-primary {
+  color: #ffffff !important;
+}
+
+.text-blue-500,
+.text-blue-600,
+.text-blue-700,
+.text-blue-800 {
+  color: #93c5fd !important; /* light blue for dark backgrounds */
+}
+
+/* Dashboard specific fixes */
+.dashboard-text {
+  color: #ffffff !important;
+}
+
+/* Card content should have light text */
+.card,
+[class*="card"] {
+  background: hsl(var(--card));
+  color: hsl(var(--card-foreground)) !important;
+}
+
+.card h1, .card h2, .card h3, .card h4, .card h5, .card h6,
+.card p, .card span, .card div {
+  color: hsl(var(--card-foreground)) !important;
+}
+
+/* Button text should be visible */
+.btn-primary,
+.btn-secondary,
+button {
+  color: hsl(var(--primary-foreground)) !important;
+}
+
+/* Navigation and sidebar text */
+.sidebar {
+  color: hsl(var(--sidebar-foreground)) !important;
+}
+
+.sidebar a {
+  color: hsl(var(--sidebar-foreground)) !important;
+}
+
+.sidebar a:hover {
+  color: #ffffff !important;
+}
+
+/* Keep navigation bar with its own colors if it has white background */
+nav.bg-white {
+  color: rgb(17, 24, 39) !important; /* gray-900 */
+}
+
+nav.bg-white a {
+  color: rgb(55, 65, 81) !important; /* gray-700 */
+}
+
+nav.bg-white a:hover {
+  color: rgb(17, 24, 39) !important; /* gray-900 */
+}
+
+/* Table text */
+table,
+th,
+td {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Form elements */
+input,
+textarea,
+select {
+  color: hsl(var(--foreground)) !important;
+  background: hsl(var(--input));
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: hsl(var(--muted-foreground)) !important;
+  opacity: 0.7 !important;
+}
+
+/* Fix muted text to be more visible on dark backgrounds */
+.text-muted,
+.text-muted-foreground,
+.text-gray-500,
+.text-gray-600 {
+  color: #cbd5e1 !important; /* slate-300 */
+}
+
+/* Fix slate colors to be light on dark backgrounds */
+.text-slate-600,
+.text-slate-700 {
+  color: #e2e8f0 !important; /* slate-200 */
+}
+
+.text-slate-800,
+.text-slate-900 {
+  color: #f1f5f9 !important; /* slate-100 */
+}
+
+/* Icons should be visible */
+svg {
+  color: currentColor;
+}
+
+.lucide,
+[class*="icon"] {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Tooltips and popovers */
+.tooltip,
+.popover {
+  background: hsl(var(--popover));
+  color: hsl(var(--popover-foreground)) !important;
+}
+
+/* Alerts and notifications on dark theme */
+.alert {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Fix specific colored text on dark backgrounds */
+.text-green-600,
+.text-green-700 {
+  color: #86efac !important; /* green-300 */
+}
+
+.text-red-600,
+.text-red-700 {
+  color: #fca5a5 !important; /* red-300 */
+}
+
+.text-yellow-600,
+.text-yellow-700 {
+  color: #fde047 !important; /* yellow-300 */
+}
+
+/* Tab text should be visible */
+.tabs-list button,
+.tab-trigger {
+  color: hsl(var(--foreground)) !important;
+}
+
+.tabs-list button[data-state="active"],
+.tab-trigger[data-state="active"] {
+  color: #ffffff !important;
+}
+
+/* Badge text contrast */
+.badge {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Dialog and modal text */
+.dialog-content,
+.modal-content {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Ensure links are visible but distinct */
+a:not(.sidebar a):not(nav a) {
+  color: #93c5fd !important; /* light blue */
+}
+
+a:not(.sidebar a):not(nav a):hover {
+  color: #dbeafe !important; /* lighter blue */
+}
+
+/* Currency and numbers should stand out */
+.currency,
+.amount,
+.text-2xl.font-bold {
+  color: #ffffff !important;
+}
+
+/* Fix any remaining blue text on blue background issues */
+[style*="color: blue"],
+[style*="color:#0000ff"],
+[style*="color: rgb(0, 0, 255)"] {
+  color: #ffffff !important;
+}
+
+/* Ensure all cards have proper text contrast */
+.bg-card {
+  color: hsl(var(--card-foreground)) !important;
+}
+
+/* Quick action cards */
+.quick-action-card {
+  color: hsl(var(--card-foreground)) !important;
+}
+
+/* Stats cards */
+.stat-value {
+  color: #ffffff !important;
+}
+
+.stat-label {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+/* Recent items lists */
+.recent-list-item {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Global fix for any remaining text on dark backgrounds */
+body:not(.light-theme) * {
+  color: inherit;
+}
+
+/* Ensure minimum contrast on dark backgrounds */
+body:not(.light-theme) p:not(.bg-white *),
+body:not(.light-theme) span:not(.bg-white *),
+body:not(.light-theme) div:not(.bg-white *),
+body:not(.light-theme) h1:not(.bg-white *),
+body:not(.light-theme) h2:not(.bg-white *),
+body:not(.light-theme) h3:not(.bg-white *),
+body:not(.light-theme) h4:not(.bg-white *),
+body:not(.light-theme) h5:not(.bg-white *),
+body:not(.light-theme) h6:not(.bg-white *) {
+  color: hsl(var(--foreground));
+}
+
+/* Fix any lingering blue text that might be hard to read */
+.text-blue-900,
+.text-indigo-900,
+.text-blue-800,
+.text-indigo-800 {
+  color: #bfdbfe !important; /* blue-200 for dark backgrounds */
+}
+
+/* Ensure all card descriptions are visible */
+.card-description,
+[class*="description"] {
+  color: hsl(var(--muted-foreground)) !important;
+  opacity: 0.9 !important;
+}
+
+/* Make sure all numbers and values stand out */
+.text-2xl,
+.text-3xl,
+.text-4xl,
+.text-5xl {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}

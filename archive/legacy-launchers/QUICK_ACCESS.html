@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ShiftMint Quick Access</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f3f4f6;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 { color: #4f46e5; }
+        a {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            background: #4f46e5;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        a:hover { background: #4338ca; }
+        .status { 
+            margin: 20px 0;
+            padding: 10px;
+            background: #e5f3ff;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 ShiftMint Quick Access</h1>
+        <div class="status">
+            <p><strong>Status:</strong> ShiftMint is running!</p>
+            <p>Click below to access the application:</p>
+        </div>
+        <a href="http://localhost:3000" target="_blank">Open ShiftMint Web Interface</a>
+        <a href="http://localhost:3001/api/health" target="_blank">Check Backend Status</a>
+        <hr style="margin: 30px 0;">
+        <h3>📋 Testing Checklist:</h3>
+        <ul style="text-align: left; display: inline-block;">
+            <li>✅ Create/Login to admin account</li>
+            <li>✅ Add test employees</li>
+            <li>✅ Clock in/out for shifts</li>
+            <li>✅ Record daily tips</li>
+            <li>✅ Generate payroll preview</li>
+            <li>✅ Check error detection</li>
+            <li>✅ Export reports</li>
+        </ul>
+    </div>
+</body>
+</html>

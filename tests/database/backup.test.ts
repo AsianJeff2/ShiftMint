@@ -44,7 +44,8 @@ afterEach(async () => {
     if (value === undefined) delete process.env[key]; else process.env[key] = value;
   }
   if (!directory.startsWith(testRoot + path.sep)) throw new Error('Test cleanup escaped its root');
-  fs.rmSync(directory, { recursive: true, force: true });
+  // Retry temporary Windows filesystem locks; exhaustion still fails cleanup.
+  fs.rmSync(directory, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });
 
 async function currentName(): Promise<string | undefined> {

@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Server } from 'node:http';
 import { request as httpRequest } from 'node:http';
+import { resolve } from 'node:path';
 import jwt from 'jsonwebtoken';
 import { createHash } from 'node:crypto';
 import bcrypt from 'bcryptjs';
@@ -471,9 +472,10 @@ describe('API security boundaries', () => {
   it('does not listen when hosted storage contains multiple businesses', async () => {
     vi.stubEnv('SHIFTMINT_RUNTIME', 'web'); vi.stubEnv('JWT_SECRET', 'fixture-jwt-secret-with-32-characters');
     vi.stubEnv('ENCRYPTION_KEY', '3'.repeat(64)); vi.stubEnv('BOOTSTRAP_TOKEN', 'fixture-bootstrap-with-32-characters');
-    vi.stubEnv('SHIFTMINT_DATA_DIR', 'C:\\fixture\\shiftmint');
+    vi.stubEnv('SHIFTMINT_DATA_DIR', resolve('.tmp-tests', 'hosted-multi-business'));
     fixture.db.business.count.mockResolvedValue(2);
     await expect(startBackendServer()).rejects.toThrow('one business');
+    expect(fixture.db.business.count).toHaveBeenCalledOnce();
   });
   it('retains terminated employees and weights recorded rates when saving a withholding estimate', async () => {
     const period = { id: 'period-a', businessId: 'business-a', status: 'open', startDate: new Date('2026-10-05'), endDate: new Date('2026-10-06'), payrollEntries: [] };

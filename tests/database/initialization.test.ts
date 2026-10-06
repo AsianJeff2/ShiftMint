@@ -31,7 +31,8 @@ afterEach(async () => {
   if (previousDatabase === undefined) delete process.env.DATABASE_URL;
   else process.env.DATABASE_URL = previousDatabase;
   if (!directory.startsWith(testRoot + path.sep)) throw new Error('Test cleanup escaped its root');
-  fs.rmSync(directory, { recursive: true, force: true });
+  // Retry temporary Windows filesystem locks; exhaustion still fails cleanup.
+  fs.rmSync(directory, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });
 
 describe('canonical database initialization', () => {

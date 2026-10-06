@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV Export Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; }
+        pre { background: #f0f0f0; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Payroll CSV Export Test</h1>
+    <button onclick="testCSVGeneration()">Test CSV Generation</button>
+    <button onclick="downloadTestCSV()">Download Test CSV</button>
+    <div id="output"></div>
+
+    <script>
+        // Simulate the payroll CSV conversion function
+        function convertToCSV(data, type) {
+            const output = document.getElementById('output');
+            
+            if (!data || data.length === 0) {
+                output.innerHTML += '<p class="error">No data to convert</p>';
+                return '';
+            }
+            
+            output.innerHTML += `<p class="info">Converting ${data.length} records for type: ${type}</p>`;
+            
+            if (type === 'payroll') {
+                output.innerHTML += '<p class="success">Using PAYROLL-SPECIFIC converter</p>';
+                
+                const payrollFields = [
+                    // Period Information
+                    { key: 'periodStart', display: 'Period Start Date' },
+                    { key: 'periodEnd', display: 'Period End Date' },
+                    { key: 'periodStatus', display: 'Period Status' },
+                    // Employee Information
+                    { key: 'employeeId', display: 'Employee ID' },
+                    { key: 'employeeName', display: 'Employee Name' },
+                    { key: 'employeeNumber', display: 'Employee Number' },
+                    { key: 'employeeEmail', display: 'Email' },
+                    { key: 'employeePhone', display: 'Phone' },
+                    { key: 'employeeDepartment', display: 'Department' },
+                    { key: 'employeeRole', display: 'Role' },
+                    { key: 'employeeStatus', display: 'Employment Status' },
+                    // Rate Information
+                    { key: 'hourlyRate', display: 'Hourly Rate' },
+                    { key: 'overtimeRate', display: 'Overtime Rate' },
+                    { key: 'payType', display: 'Pay Type' },
+                    // Hours Worked
+                    { key: 'regularHours', display: 'Regular Hours' },
+                    { key: 'overtimeHours', display: 'Overtime Hours' },
+                    { key: 'totalHours', display: 'Total Hours' },
+                    // Pay Breakdown
+                    { key: 'regularPay', display: 'Regular Pay' },
+                    { key: 'overtimePay', display: 'Overtime Pay' },
+                    { key: 'grossPay', display: 'Gross Pay' },
+                    // Tips and Deductions
+                    { key: 'totalTips', display: 'Total Tips' },
+                    { key: 'totalTaxes', display: 'Total Taxes' },
+                    { key: 'taxRate', display: 'Tax Rate' },
+                    // Net Pay
+                    { key: 'netPay', display: 'Net Pay' },
+                    // Additional Information
+                    { key: 'tipEligible', display: 'Tip Eligible' },
+                    { key: 'taxExemptions', display: 'Tax Exemptions' },
+                    { key: 'startDate', display: 'Start Date' },
+                    { key: 'notes', display: 'Notes' },
+                    // Calculated Metrics
+                    { key: 'effectiveHourlyRate', display: 'Effective Hourly Rate' },
+                    { key: 'totalCompensation', display: 'Total Compensation' }
+                ];
+                
+                output.innerHTML += `<p class="info">Fields configured: ${payrollFields.length}</p>`;
+                
+                const csvHeaders = payrollFields.map(field => field.display).join(',');
+                
+                const csvRows = data.map((row, index) => {
+                    if (index === 0) {
+                        output.innerHTML += '<p class="info">First row keys: ' + Object.keys(row).join(', ') + '</p>';
+                    }
+                    
+                    return payrollFields.map(field => {
+                        let value = row[field.key];
+                        
+                        if (value === null || value === undefined || value === '') {
+                            if (['notes', 'employeeName', 'employeeNumber', 'employeeEmail', 'employeePhone', 
+                                 'employeeDepartment', 'employeeRole', 'employeeStatus', 'payType', 
+                                 'tipEligible', 'periodStatus', 'taxRate'].includes(field.key)) {
+                                return '';
+                            }
+                            return '0';
+                        }
+                        
+                        if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
+                            return `"${value.replace(/"/g, '""')}"`;
+                        }
+                        
+                        return value;
+                    }).join(',');
+                });
+                
+                const csvContent = [csvHeaders, ...csvRows].join('\n');
+                const columnCount = csvHeaders.split(',').length;
+                
+                output.innerHTML += `<p class="success">Generated CSV with ${csvRows.length} rows and ${columnCount} columns</p>`;
+                output.innerHTML += `<p>Headers preview: ${csvHeaders.substring(0, 200)}...</p>`;
+                
+                return csvContent;
+            }
+            
+            output.innerHTML += '<p class="error">Not using payroll converter</p>';
+            return '';
+        }
+        
+        function testCSVGeneration() {
+            const output = document.getElementById('output');
+            output.innerHTML = '<h2>Test Results:</h2>';
+            
+            // Create test data that matches what the backend sends
+            const testData = [{
+                periodStart: '2024-01-01',
+                periodEnd: '2024-01-14',
+                periodStatus: 'closed',
+                employeeId: 'emp123',
+                employeeName: 'John Doe',
+                employeeNumber: 'EMP001',
+                employeeEmail: 'john@example.com',
+                employeePhone: '555-1234',
+                employeeDepartment: 'Kitchen',
+                employeeRole: 'Cook',
+                employeeStatus: 'active',
+                hourlyRate: 20.00,
+                overtimeRate: 30.00,
+                payType: 'hourly',
+                regularHours: 40,
+                overtimeHours: 5,
+                totalHours: 45,
+                regularPay: 800.00,
+                overtimePay: 150.00,
+                grossPay: 950.00,
+                totalTips: 100.00,
+                totalTaxes: 209.00,
+                taxRate: '22.00%',
+                netPay: 841.00,
+                tipEligible: 'Yes',
+                taxExemptions: 2,
+                startDate: '2023-06-01',
+                notes: 'Test employee',
+                effectiveHourlyRate: 21.11,
+                totalCompensation: 841.00
+            }];
+            
+            output.innerHTML += '<p class="info">Test data created with ' + Object.keys(testData[0]).length + ' fields</p>';
+            
+            const csv = convertToCSV(testData, 'payroll');
+            
+            if (csv) {
+                const lines = csv.split('\n');
+                const headers = lines[0].split(',');
+                output.innerHTML += `<h3 class="success">✓ CSV Generated Successfully</h3>`;
+                output.innerHTML += `<p>Total lines: ${lines.length}</p>`;
+                output.innerHTML += `<p>Column count: ${headers.length}</p>`;
+                output.innerHTML += `<p>Expected columns: 30</p>`;
+                
+                if (headers.length === 30) {
+                    output.innerHTML += '<p class="success">✓ Column count matches expected!</p>';
+                } else {
+                    output.innerHTML += '<p class="error">✗ Column count mismatch!</p>';
+                }
+                
+                output.innerHTML += '<h4>CSV Preview:</h4>';
+                output.innerHTML += '<pre>' + lines.slice(0, 3).join('\n') + '</pre>';
+            } else {
+                output.innerHTML += '<p class="error">✗ CSV generation failed</p>';
+            }
+        }
+        
+        function downloadTestCSV() {
+            const testData = [{
+                periodStart: '2024-01-01',
+                periodEnd: '2024-01-14',
+                periodStatus: 'closed',
+                employeeId: 'emp123',
+                employeeName: 'John Doe',
+                employeeNumber: 'EMP001',
+                employeeEmail: 'john@example.com',
+                employeePhone: '555-1234',
+                employeeDepartment: 'Kitchen',
+                employeeRole: 'Cook',
+                employeeStatus: 'active',
+                hourlyRate: 20.00,
+                overtimeRate: 30.00,
+                payType: 'hourly',
+                regularHours: 40,
+                overtimeHours: 5,
+                totalHours: 45,
+                regularPay: 800.00,
+                overtimePay: 150.00,
+                grossPay: 950.00,
+                totalTips: 100.00,
+                totalTaxes: 209.00,
+                taxRate: '22.00%',
+                netPay: 841.00,
+                tipEligible: 'Yes',
+                taxExemptions: 2,
+                startDate: '2023-06-01',
+                notes: 'Test employee',
+                effectiveHourlyRate: 21.11,
+                totalCompensation: 841.00
+            }];
+            
+            const csv = convertToCSV(testData, 'payroll');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'test-payroll-export.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            document.getElementById('output').innerHTML += '<p class="success">Test CSV downloaded!</p>';
+        }
+    </script>
+</body>
+</html>

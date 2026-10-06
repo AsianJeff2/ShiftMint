@@ -1,0 +1,22 @@
+NSIS Installer Asset Requirements
+=================================
+
+The following bitmap images are required for the NSIS installer but are currently placeholders:
+
+1. installer-sidebar.bmp
+   - Dimensions: 164x314 pixels
+   - Color depth: 24-bit
+   - Purpose: Displayed on the left side of the installer wizard
+
+2. installer-header.bmp
+   - Dimensions: 150x57 pixels  
+   - Color depth: 24-bit
+   - Purpose: Displayed in the header of installer pages
+
+To create these assets:
+1. Use your existing icon.png.png as a base
+2. Create the bitmaps with the exact dimensions above
+3. Save as 24-bit BMP files
+4. Place in the assets/ directory
+
+Note: The installer will still work without these files, but warnings will appear during build.

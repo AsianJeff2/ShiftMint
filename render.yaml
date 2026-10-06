@@ -1,0 +1,38 @@
+# SQLite requires one paid instance and a disk mounted when the process starts.
+services:
+  - type: web
+    name: shiftmint
+    runtime: node
+    plan: 0.5c-512mb
+    region: oregon
+    numInstances: 1
+    autoDeployTrigger: off
+    buildCommand: npm ci --include=dev --ignore-scripts && npm run build:web
+    startCommand: npm start
+    healthCheckPath: /api/health
+    maxShutdownDelaySeconds: 30
+    disk:
+      name: shiftmint-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 24.21.0
+      - key: NODE_ENV
+        value: production
+      - key: SHIFTMINT_RUNTIME
+        value: web
+      - key: HOST
+        value: 0.0.0.0
+      - key: SHIFTMINT_DATA_DIR
+        value: /var/data
+      - key: DATABASE_URL
+        value: file:/var/data/shiftmint.db
+      - key: TRUST_PROXY
+        value: '1'
+      - key: JWT_SECRET
+        generateValue: true
+      - key: BOOTSTRAP_TOKEN
+        generateValue: true
+      - key: ENCRYPTION_KEY
+        sync: false

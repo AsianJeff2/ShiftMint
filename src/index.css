@@ -1,6 +1,6 @@
 /* Import contrast fixes for better readability */
-@import './styles/contrast-fixes.css';
-@import './styles/dark-theme-text-fix.css';
+@import '../styles/contrast-fixes.css';
+@import '../styles/dark-theme-text-fix.css';
 
 @tailwind base;
 @tailwind components;

@@ -6,7 +6,7 @@ ShiftMint tracks restaurant employees, shifts, tips and payroll estimates. The s
 
 | Path | Purpose |
 | --- | --- |
-| main.tsx, App.tsx | Browser entry and routes |
+| src/ | Browser entry, HTML shell, routes, entry styles and Vite declarations |
 | pages/, components/, contexts/, hooks/ | Application UI and state |
 | electron/backend/ | Authentication, scoped API routes and SQLite lifecycle |
 | electron/main/, electron/preload/ | Desktop lifecycle and privileged IPC |
@@ -14,8 +14,18 @@ ShiftMint tracks restaurant employees, shifts, tips and payroll estimates. The s
 | lib/security/, lib/transformers/, lib/export/ | Shared contracts and focused helpers |
 | prisma/ | Canonical schema and migration history |
 | tests/ | Browser, database and desktop regressions |
-| docs/ | Audit, deployment, database recovery, desktop runtime and POS guides |
+| config/ | Vite, Vitest, PostCSS, Tailwind and application/server/test TypeScript configuration |
+| deploy/Dockerfile | Alternative container build definition |
+| docs/ | Audit, operating guides, security boundaries, license and changelog |
 | archive/ | Excluded historical app forks, scripts and reports |
+
+The renderer starts at `src/main.tsx` and `src/App.tsx`, with its HTML shell at `src/index.html`. UI and shared modules retain their existing folders; `@/` resolves from the repository root. `electron/tsconfig.json` remains with the desktop subsystem.
+
+Some files stay at root for tool discovery: npm reads `package.json` and `package-lock.json`; GitHub displays `README.md`; Render reads `render.yaml`; CI reads `.node-version`; Git, Docker and environment loaders use the root dotfiles. The root `tsconfig.json` is a small editor-discovery wrapper around `config/tsconfig.app.json`. Local `HANDOFF.md` and `REVIEW.md` protocol views remain ignored.
+
+Run Vite and Vitest through the npm scripts below. Direct commands require `--config config/vite.config.mts` or `--config config/vitest.config.mts`; point editor test integrations at `config/vitest.config.mts` as well.
+
+Read the [security boundaries](docs/SECURITY.md), [software license](docs/LICENSE.txt) and [changelog](docs/CHANGELOG.md).
 
 ## Installation and verification
 
@@ -36,7 +46,7 @@ npm run dev
 
 The desktop shell generates and persists its workspace secrets before starting the backend. Back up both the database and the secret file. See [desktop runtime](docs/DESKTOP_RUNTIME.md).
 
-The final repaired source passed **564 tests in 54 files**, all three typechecks, and clean renderer/API/Electron builds on Node 24.21.0/npm 11.19 on 2026-10-05. Production-configured local HTTP acceptance passed **37 checks**. Current compiled browser acceptance covered failed, stale and capped read states, bounded tip dates and retry recovery, with the exact export/clock/restore regression scope recorded separately. Fresh Windows unpacked packaging excluded database canaries; its packaged native database migration, backup, restore and restart smoke passed. Earlier broader browser checks remain dated evidence for their source snapshots. Fresh audit recorded zero runtime advisories and 15 development advisories (five high, ten moderate). Native desktop window/installer launch, Docker execution, hosting and live POS credentials remain unverified. Independent review and transfer status belongs in the immutable release delivery record.
+Before this folder organization, the repaired source passed **564 tests in 54 files**, all three typechecks, and clean renderer/API/Electron builds on Node 24.21.0/npm 11.19 on 2026-10-05. Production-configured local HTTP acceptance passed **37 checks**. That snapshot's compiled browser acceptance covered failed, stale and capped read states, bounded tip dates and retry recovery, with the exact export/clock/restore regression scope recorded separately. Its Windows unpacked packaging excluded database canaries; its packaged native database migration, backup, restore and restart smoke passed. Earlier broader browser checks remain dated evidence for their source snapshots. The recorded audit found zero runtime advisories and 15 development advisories (five high, ten moderate). Verification and renewed review of the reorganized tree are pending. Native desktop window/installer launch, Docker execution, hosting and live POS credentials remain unverified. Independent review and transfer status belongs in the immutable release delivery record.
 
 The first independent review rejected an earlier candidate. Round2 found a Linux test assertion and period-export date contract; round3 found failed reads presented as empty or zero financial data. Repairs preserve historical updates, require the desktop capability, validate CSV contracts, bound tip history, show incomplete reads as unavailable, block unsafe writes/analysis, reconcile rounded wages and retain disconnected middleware work under the approved queue. The user authorized private transfer after verification and renewed independent review; the release record identifies the reviewed artifact and resulting commit.
 
@@ -45,6 +55,12 @@ For local web development, copy .env.example to .env, supply independent secrets
 ## Deployment and integrations
 
 The Render blueprint defines one Node service with a persistent SQLite disk. Migrations run during process initialization after that disk mounts. Review [deployment](docs/DEPLOYMENT.md) before starting a service.
+
+For the alternative container definition, run this command from the repository root so Docker receives the complete build context:
+
+```sh
+docker build -f deploy/Dockerfile .
+```
 
 Square merchant tokens and Toast Standard credentials enable validated read-only sales, labor and menu previews. Tokens stay encrypted on the server. POS previews do not modify shifts or payroll; employee/location mapping and durable import processing remain future work. See [POS setup and boundaries](docs/POS_INTEGRATIONS.md). Verona POS is identified. Its connector needs an approved API or export contract from the vendor before implementation.
 

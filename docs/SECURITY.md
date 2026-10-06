@@ -12,4 +12,4 @@ Staff accounts cannot list employees or shifts because this release has no verif
 
 POS credentials remain server-side and encrypted. Current adapters are read-only. There are no public webhook endpoints, automatic payroll imports or Square OAuth onboarding in this release.
 
-Do not publish databases, backup files, .env files, runtime-secrets.json or machine-specific permissions. Historical archive files are evidence, not security or production-readiness claims. See docs/AUDIT.md for remaining unverified areas and dependency advisories.
+Do not publish databases, backup files, .env files, runtime-secrets.json or machine-specific permissions. Historical archive files are evidence, not security or production-readiness claims. See the [audit](AUDIT.md) for remaining unverified areas and dependency advisories.

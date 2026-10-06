@@ -6,7 +6,7 @@ Deployment remains pending access to the hosting account, confirmation of its bi
 
 ## Configuration in the repository
 
-`render.yaml` defines the following configuration. It uses Render's native Node runtime; the separate `Dockerfile` is an alternative packaging path.
+Root `render.yaml` defines the following configuration. It uses Render's native Node runtime; `deploy/Dockerfile` is an alternative packaging path. Build configuration lives under `config/`, and the renderer entry and HTML shell live under `src/`; supported npm scripts select those paths explicitly.
 
 | Setting | Configured value |
 | --- | --- |
@@ -26,6 +26,14 @@ Render currently lists `0.5c-512mb` as 0.5 CPU with 512 MB RAM and supports `aut
 The disk requires a paid service. It is available only to the running service instance, not during build or pre-deploy commands. Disk-backed services cannot scale to multiple instances and have downtime during deployments. These constraints determine the current architecture. [Render persistent disks](https://render.com/docs/disks).
 
 The build installs development dependencies explicitly because TypeScript and Vite are build tools. Dependency lifecycle scripts are disabled. `build:web` explicitly generates the Prisma client, builds the renderer into `dist`, and compiles the API into `dist-server`. It does not package Electron. `npm start` starts the compiled backend, which also serves `dist` and handles SPA routes.
+
+Build the alternative container definition from the repository root:
+
+```sh
+docker build -f deploy/Dockerfile .
+```
+
+The final `.` supplies the repository root as the build context, including npm manifests, `src/`, `config/`, backend/shared source and Prisma resources. This command is a build instruction; no native Docker build or run has been observed.
 
 Database initialization runs **at process startup after the disk mounts**, before the HTTP listener opens. It applies the checked-in migration history, snapshots an existing database before pending upgrades, and verifies database integrity. Do not move SQLite migrations into Render's build or pre-deploy command. A historical database that fails guarded migration checks needs the offline procedure in [database upgrades and recovery](DATABASE_MIGRATION.md).
 
@@ -108,7 +116,7 @@ Effective timezone or workweek-start changes are refused while any closed or pai
 
 ## Verification still required
 
-The final repaired source passed **564 tests in 54 files**, all three typechecks, and clean renderer/API/Electron builds on Node 24.21.0/npm 11.19 on 2026-10-05. Production-configured local HTTP acceptance passed **37 checks**. Current compiled browser acceptance covered failed, stale and capped read states, bounded tip dates and retry recovery, with the exact export/clock/restore regression scope recorded separately. Fresh Windows unpacked packaging excluded database canaries; its packaged native database migration, backup, restore and restart smoke passed. Earlier broader browser checks remain dated evidence for their source snapshots. Fresh audit recorded zero runtime advisories and 15 development advisories (five high, ten moderate). Native desktop window/installer launch, Docker execution, hosting and live POS credentials remain unverified. Independent review and transfer status belongs in the immutable release delivery record. See [AUDIT.md](AUDIT.md) for dated evidence and remaining limits.
+Before this folder organization, the repaired source passed **564 tests in 54 files**, all three typechecks, and clean renderer/API/Electron builds on Node 24.21.0/npm 11.19 on 2026-10-05. Production-configured local HTTP acceptance passed **37 checks**. That snapshot's compiled browser acceptance covered failed, stale and capped read states, bounded tip dates and retry recovery, with the exact export/clock/restore regression scope recorded separately. Its Windows unpacked packaging excluded database canaries; its packaged native database migration, backup, restore and restart smoke passed. Earlier broader browser checks remain dated evidence for their source snapshots. The recorded audit found zero runtime advisories and 15 development advisories (five high, ten moderate). Verification and renewed review of the reorganized tree are pending. Native desktop window/installer launch, Docker execution, hosting and live POS credentials remain unverified. Independent review and transfer status belongs in the immutable release delivery record. See [AUDIT.md](AUDIT.md) for dated evidence and remaining limits.
 
 Backend startup requires `SHIFTMINT_RUNTIME` to be exactly `web` or `desktop`; missing or misspelled values are refused before listening. The desktop entry sets its mode and per-launch API capability. Migration subprocesses receive only the SQLite URL and required platform/native-engine paths, with `CHECKPOINT_DISABLE=1`; they do not inherit application authentication, encryption, bootstrap or POS secrets. Prisma can still fetch a missing native engine. Include the target platform's engines in the build and verify startup in that deployment environment; dependency installation and client generation also require their own network review.
 

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Modernized the maintained Node 24, Electron 44, React 19, Vite 8 and Prisma 6 build paths and added separate compiled web and desktop entry points.
 - Consolidated the active renderer/API/database implementation and moved duplicate applications, obsolete repositories/domain calculators, simulated UI and completion reports into `archive/`.
+- Grouped renderer entry files under `src/`, build configuration under `config/`, supporting documents under `docs/` and the container definition under `deploy/`. Root manifests, README, Render blueprint, discovery dotfiles and the editor TypeScript wrapper retain their standard locations.
 - Added private hosted deployment configuration and maintained database, desktop and POS operation guides. Hosted deployments keep business data on their configured server; POS previews make outbound provider requests.
 - Made payroll calculations and exports explicitly estimates. Gross wages exclude tips; estimated net compensation includes all recorded tips, including amounts already received, and is not the remaining amount payable. Payment finalization and tax filing remain unavailable.
 

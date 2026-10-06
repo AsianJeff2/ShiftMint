@@ -3,8 +3,11 @@ import react from '@vitejs/plugin-react';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+
 // https://vitest.dev/config/
 export default defineConfig({
+  root: projectRoot,
   plugins: [react()],
   test: {
     globals: true,
@@ -38,7 +41,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(path.dirname(fileURLToPath(import.meta.url)), './'),
+      '@': projectRoot,
     },
   },
 });

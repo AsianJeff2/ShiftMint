@@ -2,6 +2,8 @@
 
 The desktop app uses the same renderer and API as the web app. Electron runs a private API on the local workstation and loads the packaged renderer from `dist/index.html`. Development uses the local Vite server supplied by `npm run dev`; the Electron launcher does not start a second Vite process.
 
+Renderer entry files and the HTML shell live under `src/`. Vite, application/server TypeScript and other build configuration live under `config/`; `electron/tsconfig.json` stays with the desktop source. Run supported npm scripts from the repository root. The output directories and packaged renderer path remain unchanged by this folder organization.
+
 The canonical Electron entrypoint is `electron/main/index.ts`, compiled to `dist-electron/electron/main/index.js`. `index-production.ts` is a compatibility entrypoint that imports the same implementation. Build tools must not copy that compatibility file over the canonical source.
 
 ## Local data and configuration
@@ -47,3 +49,5 @@ Run `npm run test:run -- tests/desktop` for the focused renderer, IPC, startup, 
 Unit checks do not verify native Electron launch, installer signing, native database engine packaging, or backup compatibility with an existing operator workspace. Validate those separately with a disposable data directory before shipping an installer.
 
 `npm run build` produces `dist/`, `dist-server/` and `dist-electron/`. `npm run dist:win` builds Windows x64 NSIS and portable artifacts in `release/`. The manifest bundles explicit Prisma schema/migration files and physical runtime dependencies; it does not include development SQLite files. Current Windows configuration uses a per-user installer, `asInvoker` and no elevation. Signing is not configured. A packaged engine/database smoke check does not prove a native window, installer interaction, signed release or an operator-data upgrade; record those checks separately.
+
+The installer license is maintained at [LICENSE.txt](LICENSE.txt). Earlier native smoke results describe their pre-organization artifacts; verification and packaging acceptance for the reorganized tree remain pending.

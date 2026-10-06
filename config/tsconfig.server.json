@@ -12,22 +12,22 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "skipLibCheck": true,
-    "rootDir": ".",
-    "outDir": "dist-server",
+    "rootDir": "..",
+    "outDir": "../dist-server",
     "types": [
       "node"
     ],
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "electron/backend/**/*.ts",
-    "scripts/migrate-database.ts",
-    "scripts/encrypt-existing-data.ts"
+    "../electron/backend/**/*.ts",
+    "../scripts/migrate-database.ts",
+    "../scripts/encrypt-existing-data.ts"
   ],
   "exclude": [
-    "node_modules",
-    "**/*.test.*",
-    "**/*.spec.*",
-    "dist-server"
+    "../node_modules",
+    "../**/*.test.*",
+    "../**/*.spec.*",
+    "../dist-server"
   ]
 }
